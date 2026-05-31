@@ -22,7 +22,7 @@ async function fetchProductById(id) {
 // fetchProductById(3);
 
 async function fetchUser(id) {
-  const response = await fetch(`http://localhost:3333/products/${id}`);
+  const response = await fetch(`http://localhost:3333/user/${id}`);
   const data = await response.json();
   console.log(data);
 }
@@ -36,6 +36,21 @@ const form = document.querySelector("form");
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  const regex = {
+    onlyLetters: /^[A-Za-zÀ-ÿ\s]+$/,
+    onlyNumbers: /^\d+$/,
+  };
+
+  if (!regex.onlyLetters.test(ProductName.value)) {
+    alert("O nome do produto deve conter apenas letras.");
+    return;
+  }
+
+  if (!regex.onlyNumbers.test(ProductPrice.value)) {
+    console.log("O preço deve conter apenas números");
+    return;
+  }
 
   await fetch("http://localhost:3333/products", {
     method: "POST",
@@ -51,3 +66,12 @@ form.addEventListener("submit", async (event) => {
 
   await fetchProducts();
 });
+
+async function fetchProdutos() {
+  const res = await fetch("http://localhost:3333/products");
+  const data = await res.json();
+  console.log(data);
+}
+
+
+fetchProducts()
